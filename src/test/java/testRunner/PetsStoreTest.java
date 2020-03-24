@@ -6,11 +6,12 @@ import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(
-        features = "src/test/features",
-        glue = "stepDefinitions",
-        tags = "@withdrawal",
+        features = "src/test/resources/cucumber/petsStore",
+        glue = {"com/stepDefinitions/swagger/petsStore", "com/stepDefinitions/swagger/swaggerMain"},
+        tags = "@get_pet_from_id",
         plugin = {"pretty", "summary"},
         strict = true
 )
-public class CalculatorTest {
+
+public class PetsStoreTest {
 }
