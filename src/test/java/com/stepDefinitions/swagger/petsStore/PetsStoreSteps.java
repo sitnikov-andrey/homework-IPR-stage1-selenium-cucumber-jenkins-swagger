@@ -11,7 +11,7 @@ public class PetsStoreSteps {
     public void я_могу_получить_данные_питомца_по(int id) {
 
         HashMap PetInformationById = PetsStoreMetods.getPetInformationById(id);
-        System.out.println(PetInformationById);
+        PetsStoreMetods.printPetInformationById(PetInformationById);
 
     }
 

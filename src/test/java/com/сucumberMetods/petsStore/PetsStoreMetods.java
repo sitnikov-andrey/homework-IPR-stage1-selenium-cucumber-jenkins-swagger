@@ -6,7 +6,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.HttpURLConnection;
 import com.сucumberMetods.swagger.SwaggerLocators;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -59,7 +64,7 @@ public class PetsStoreMetods {
             } else {
                 //Если статус не соответствует выше перечисленным, то получаем ответ ошибки и передаем его как текст в исключение
                 reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
-                while ((line = reader.readLine()) != null){
+                while ((line = reader.readLine()) != null) {
                     responseContent.append(line);
                 }
                 reader.close();
@@ -73,6 +78,69 @@ public class PetsStoreMetods {
         }
 
         return null;
+    }
+
+    public static void printPetInformationById(HashMap<Integer, String> PetInformation) {
+
+        for (Integer key : PetInformation.keySet()) {
+            if (key == 400 || key == 404) {
+                System.out.println("Статус : " + key);
+                System.out.println(PetInformation.get(key));
+            } else if (key == 200) {
+                System.out.println("Статус : " + key);
+                parsePetInformationById(PetInformation.get(key));
+            }
+        }
+
+    }
+
+    public static void parsePetInformationById(String PetInformationUglyJson) throws JSONException {
+
+        int id;
+        JSONObject category;
+        int categoryId;
+        String categoryName;
+        String name;
+        JSONArray photoUrls;
+        JSONArray tags;
+        int tagsId;
+        String tagsName;
+        String status;
+
+        JSONObject petInformationById = new JSONObject(PetInformationUglyJson);
+        id = petInformationById.getInt("id");
+        System.out.println("id : " + id);
+
+        category = petInformationById.getJSONObject("category");
+        categoryId = category.getInt("id");
+        categoryName = category.getString("name");
+        System.out.println("category :");
+        System.out.println("    id : " + categoryId);
+        System.out.println("    name : " + categoryName);
+
+        name = petInformationById.getString("name");
+        System.out.println("name : " + name);
+
+        photoUrls = petInformationById.getJSONArray("photoUrls");
+        System.out.println("photoUrls :");
+        for (Object photo : photoUrls){
+            System.out.println("    " + photo);
+        }
+
+        tags = petInformationById.getJSONArray("tags");
+        System.out.println("tags :");
+        Iterator tagsItr = tags.iterator();
+        while (tagsItr.hasNext()) {
+            JSONObject tag = (JSONObject) tagsItr.next();
+            tagsId = (Integer) tag.get("id");
+            tagsName = (String) tag.get("name");
+            System.out.println("    id : " + tagsId);
+            System.out.println("    name : " + tagsName);
+        }
+
+        status = petInformationById.getString("status");
+        System.out.println("status : " + status);
+
     }
 
 }
