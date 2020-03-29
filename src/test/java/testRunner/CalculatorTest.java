@@ -12,5 +12,5 @@ import org.junit.runner.RunWith;
         plugin = {"pretty", "summary"},
         strict = true
 )
-public class CalculatorMetodsTest {
+public class CalculatorTest {
 }

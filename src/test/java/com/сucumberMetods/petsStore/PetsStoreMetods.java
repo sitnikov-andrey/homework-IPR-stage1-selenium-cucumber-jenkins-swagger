@@ -1,8 +1,10 @@
 package com.сucumberMetods.petsStore;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.net.HttpURLConnection;
 import com.сucumberMetods.swagger.SwaggerLocators;
@@ -27,7 +29,7 @@ public class PetsStoreMetods {
         String line;
         StringBuffer responseContent = new StringBuffer();
         Map<Integer, String> responseAndStatus = new HashMap<Integer, String>();
-        int status;
+        int responseStatus;
 
         try {
             url = new URL(SwaggerLocators.urlPetStorePetId + id); //К URL petstore добавляем id
@@ -38,9 +40,9 @@ public class PetsStoreMetods {
             connection.setConnectTimeout(50000);
             connection.setReadTimeout(50000);
 
-            status = connection.getResponseCode(); //Получаем статус ответа
+            responseStatus = connection.getResponseCode(); //Получаем статус ответа
 
-            if (status == 200) {
+            if (responseStatus == 200) {
                 //Если статус 200, то значит все ок. Мы получаем данные и передаем их в jsonResponse
                 reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 while ((line = reader.readLine()) != null) {
@@ -48,17 +50,17 @@ public class PetsStoreMetods {
                 }
                 reader.close();
                 jsonResponse = responseContent.toString(); //Записываем json ответ в переменную
-                responseAndStatus.put(status, jsonResponse);
+                responseAndStatus.put(responseStatus, jsonResponse);
                 return (HashMap) responseAndStatus;
 
-            } else if (status == 404) {
+            } else if (responseStatus == 404) {
 
-                responseAndStatus.put(status, "Pet not found");
+                responseAndStatus.put(responseStatus, "Pet not found");
                 return (HashMap) responseAndStatus;
 
-            } else if (status == 400) {
+            } else if (responseStatus == 400) {
 
-                responseAndStatus.put(status, "Invalid ID supplied");
+                responseAndStatus.put(responseStatus, "Invalid ID supplied");
                 return (HashMap) responseAndStatus;
 
             } else {
@@ -140,6 +142,74 @@ public class PetsStoreMetods {
 
         status = petInformationById.getString("status");
         System.out.println("status : " + status);
+
+    }
+
+    public static void updatePetById(int id, String newPetName, String newPetStatus) {
+
+        BufferedReader reader;
+        String line;
+        StringBuffer responseContent = new StringBuffer();
+        Map<Integer, String> responseAndStatus = new HashMap<Integer, String>();
+        int responseStatus;
+
+        try {
+
+            url = new URL(SwaggerLocators.urlPetStorePetId + id); //К URL petstore добавляем id
+            connection = (HttpURLConnection) url.openConnection(); //Открываем коннект, если URL был корректный
+
+            //Настройка запроса
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("User-Agent", SwaggerLocators.USER__AGENT);
+            connection.setRequestProperty("Accept-Language", SwaggerLocators.ACCEPT_LANGUAGE);
+            connection.setConnectTimeout(50000);
+            connection.setReadTimeout(50000);
+
+            String urlParameters = "name=" + newPetName + "&status=" + newPetStatus;
+
+            //Send post request
+            connection.setDoOutput(true);
+            DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+            wr.writeBytes(urlParameters);
+            wr.flush();
+            wr.close();
+
+            responseStatus = connection.getResponseCode(); //Получаем статус ответа
+
+            if (responseStatus == 200) {
+
+                System.out.println("Статус : " + responseStatus);
+                System.out.println("Новое имя питомца : " + newPetName);
+                System.out.println("Новый статус питомца : " + newPetStatus);
+
+            } else if (responseStatus == 404) {
+
+                System.out.println("Статус : " + responseStatus);
+                System.out.println("Pet not found");
+
+            } else if (responseStatus == 405) {
+
+                System.out.println("Статус : " + responseStatus);
+                System.out.println("Invalid input");
+
+            } else {
+                //Если статус не соответствует выше перечисленным, то получаем ответ ошибки и передаем его как текст в исключение
+                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+                while ((line = reader.readLine()) != null) {
+                    responseContent.append(line);
+                }
+                reader.close();
+                throw new IOException(responseContent.toString());
+            }
+
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 

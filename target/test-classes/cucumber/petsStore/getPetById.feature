@@ -1,5 +1,5 @@
 # language: ru
-@get_pet_from_id
+@get_pet_by_id
 Функция: Получаем питомца из БД по id
 
   Структура сценария: Получить питомца по id
@@ -8,4 +8,4 @@
 
     Примеры:
       |SwaggerURL                  |id|
-      |"http://petstore.swagger.io"|3 |
+      |"http://petstore.swagger.io"|123123123 |

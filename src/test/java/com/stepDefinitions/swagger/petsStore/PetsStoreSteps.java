@@ -15,4 +15,12 @@ public class PetsStoreSteps {
 
     }
 
+    @Тогда("я могу по id = {int} изменить имя пиомца на {string} и статус на {string}")
+    public void я_могу_по_id_изменить_имя_пиомца_на(int id, String newPetName, String newPetStatus) {
+
+    PetsStoreMetods.updatePetById(id, newPetName, newPetStatus);
+
+
+    }
+
 }
