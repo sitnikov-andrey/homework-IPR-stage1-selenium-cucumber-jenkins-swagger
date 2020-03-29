@@ -8,6 +8,8 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.net.HttpURLConnection;
 import com.сucumberMetods.swagger.SwaggerLocators;
+import io.cucumber.java.sl.In;
+import org.javatuples.Octet;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -162,6 +164,7 @@ public class PetsStoreMetods {
             connection.setRequestMethod("POST");
             connection.setRequestProperty("User-Agent", SwaggerLocators.USER__AGENT);
             connection.setRequestProperty("Accept-Language", SwaggerLocators.ACCEPT_LANGUAGE);
+            connection.setRequestProperty("Content-Type", "application/json");
             connection.setConnectTimeout(50000);
             connection.setReadTimeout(50000);
 
@@ -175,21 +178,102 @@ public class PetsStoreMetods {
             wr.close();
 
             responseStatus = connection.getResponseCode(); //Получаем статус ответа
+            System.out.println("Статус : " + responseStatus);
 
             if (responseStatus == 200) {
 
-                System.out.println("Статус : " + responseStatus);
                 System.out.println("Новое имя питомца : " + newPetName);
                 System.out.println("Новый статус питомца : " + newPetStatus);
 
             } else if (responseStatus == 404) {
 
-                System.out.println("Статус : " + responseStatus);
                 System.out.println("Pet not found");
 
             } else if (responseStatus == 405) {
 
-                System.out.println("Статус : " + responseStatus);
+                System.out.println("Invalid input");
+
+            } else {
+                //Если статус не соответствует выше перечисленным, то получаем ответ ошибки и передаем его как текст в исключение
+                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+                while ((line = reader.readLine()) != null) {
+                    responseContent.append(line);
+                }
+                reader.close();
+                throw new IOException(responseContent.toString());
+            }
+
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void createPet(Octet<Integer, Integer, String, String, String, Integer, String, String> params) {
+
+        int id = params.getValue0();
+        int categoryId = params.getValue1();
+        String categoryName = params.getValue2();
+        String petName = params.getValue3();
+        String photoURLs = params.getValue4();
+        int tagsId = params.getValue5();
+        String tagsName = params.getValue6();
+        String status = params.getValue7();
+
+        BufferedReader reader;
+        String line;
+        StringBuffer responseContent = new StringBuffer();
+        Map<Integer, String> responseAndStatus = new HashMap<Integer, String>();
+        int responseStatus;
+
+        try {
+
+            url = new URL(SwaggerLocators.urlPetStorePetId);
+            connection = (HttpURLConnection) url.openConnection();
+
+            //Настройка запроса
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("User-Agent", SwaggerLocators.USER__AGENT);
+            connection.setRequestProperty("Accept-Language", SwaggerLocators.ACCEPT_LANGUAGE);
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setConnectTimeout(50000);
+            connection.setReadTimeout(50000);
+
+            String urlParameters = "{ \"id\": " + id + ", \"category\": { \"id\": " + categoryId + "," +
+                    " \"name\": \"" + categoryName + "\" }, \"name\": \"" + petName + "\"," +
+                    " \"photoUrls\": [ \"" + photoURLs + "\" ], \"tags\": [ { \"id\": " + tagsId + ", \"name\": \"" + tagsName + "\" } ]," +
+                    " \"status\": \"" + status + "\"}";
+
+            //Send post request
+            connection.setDoOutput(true);
+            DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+            wr.writeBytes(urlParameters);
+            wr.flush();
+            wr.close();
+
+            responseStatus = connection.getResponseCode(); //Получаем статус ответа
+            System.out.println("Статус : " + responseStatus);
+
+            if (responseStatus == 200) {
+
+                System.out.println("id : " + id);
+                System.out.println("Category :");
+                System.out.println("    id : " + categoryId);
+                System.out.println("    name : " + categoryName);
+                System.out.println("Name : " + petName);
+                System.out.println("Photo URLs : " + photoURLs);
+                System.out.println("Tags :");
+                System.out.println("    id : " + tagsId);
+                System.out.println("    name : " + tagsName);
+                System.out.println("Status : " + status);
+
+            } else if (responseStatus == 405) {
+
                 System.out.println("Invalid input");
 
             } else {

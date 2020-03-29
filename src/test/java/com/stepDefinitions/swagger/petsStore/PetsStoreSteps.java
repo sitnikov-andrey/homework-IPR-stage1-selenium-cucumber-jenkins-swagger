@@ -2,6 +2,7 @@ package com.stepDefinitions.swagger.petsStore;
 
 import io.cucumber.java.ru.*; //Импортируем все ключевые слова
 import com.сucumberMetods.petsStore.PetsStoreMetods;
+import org.javatuples.Octet;
 
 import java.util.HashMap;
 
@@ -20,6 +21,26 @@ public class PetsStoreSteps {
 
     PetsStoreMetods.updatePetById(id, newPetName, newPetStatus);
 
+    }
+
+    @Тогда("я могу создать питомца по заданным параметрам : {int}, {int}, {string}, {string}, {string}, {int}, {string}, {string}")
+    public void я_могу_создать_питомца_по_заданным_параметрам(int id, int categoryId, String categoryName,
+                                                              String petName, String photoURLs, int tagsId,
+                                                              String tagsName, String status
+        ) {
+
+        Octet<Integer, Integer, String, String, String, Integer, String, String> params = Octet.with(
+                id,
+                categoryId,
+                categoryName,
+                petName,
+                photoURLs,
+                tagsId,
+                tagsName,
+                status
+        );
+
+        PetsStoreMetods.createPet(params);
 
     }
 
