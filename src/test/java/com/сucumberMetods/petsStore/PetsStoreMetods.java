@@ -8,7 +8,6 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.net.HttpURLConnection;
 import com.сucumberMetods.swagger.SwaggerLocators;
-import io.cucumber.java.sl.In;
 import org.javatuples.Octet;
 import org.json.JSONArray;
 import org.json.JSONException;
