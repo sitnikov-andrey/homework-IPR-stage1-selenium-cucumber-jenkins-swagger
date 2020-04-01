@@ -1,4 +1,4 @@
-package com.сucumberMetods.swagger;
+package com.сucumberMethods.swagger;
 
 public class SwaggerLocators {
 

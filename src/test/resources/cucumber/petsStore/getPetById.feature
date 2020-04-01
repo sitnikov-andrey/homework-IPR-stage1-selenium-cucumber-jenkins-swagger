@@ -7,5 +7,5 @@
     Тогда я могу получить данные питомца по id = <id>
 
     Примеры:
-      |SwaggerURL                  |id|
-      |"http://petstore.swagger.io"|123123123 |
+      |SwaggerURL                  |id  |
+      |"http://petstore.swagger.io"|111 |

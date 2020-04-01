@@ -1,6 +1,6 @@
 package com.stepDefinitions.swagger.swaggerMain;
 
-import com.сucumberMetods.swagger.SwaggerApiMetods;
+import com.сucumberMethods.swagger.SwaggerApiMethods;
 import io.cucumber.java.ru.*; //Импортируем все ключевые слова
 import static org.junit.Assert.assertEquals;
 
@@ -13,7 +13,7 @@ public class SwaggerMainSteps {
     public void у_меня_есть_доступ_к_разделу(String swaggerUrlPetStore) throws Throwable {
 
         this.swaggerUrlPetStore = swaggerUrlPetStore;
-        mainSwaggerUrlResponse = SwaggerApiMetods.petStoreStatus(swaggerUrlPetStore);
+        mainSwaggerUrlResponse = SwaggerApiMethods.petStoreStatus(swaggerUrlPetStore);
         assertEquals(mainSwaggerUrlResponse, 200);
 
     }

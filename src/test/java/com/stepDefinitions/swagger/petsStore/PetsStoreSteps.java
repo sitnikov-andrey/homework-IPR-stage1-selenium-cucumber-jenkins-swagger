@@ -1,7 +1,8 @@
 package com.stepDefinitions.swagger.petsStore;
 
+import com.сucumberMethods.petsStore.Pet;
 import io.cucumber.java.ru.*; //Импортируем все ключевые слова
-import com.сucumberMetods.petsStore.PetsStoreMetods;
+import com.сucumberMethods.petsStore.PetsStoreMethods;
 import org.javatuples.Octet;
 
 import java.util.HashMap;
@@ -11,15 +12,17 @@ public class PetsStoreSteps {
     @Тогда("я могу получить данные питомца по id = {int}")
     public void я_могу_получить_данные_питомца_по(int id) {
 
-        HashMap PetInformationById = PetsStoreMetods.getPetInformationById(id);
-        PetsStoreMetods.printPetInformationById(PetInformationById);
+        HashMap PetInformationById = PetsStoreMethods.getPetInformationById(id);
+        PetsStoreMethods.printPetInformationById(PetInformationById);
 
     }
 
     @Тогда("я могу по id = {int} изменить имя пиомца на {string} и статус на {string}")
     public void я_могу_по_id_изменить_имя_пиомца_на(int id, String newPetName, String newPetStatus) {
 
-    PetsStoreMetods.updatePetById(id, newPetName, newPetStatus);
+
+        Pet updatePet = new Pet(id, newPetName, newPetStatus);
+        PetsStoreMethods.updatePetById(updatePet);
 
     }
 
@@ -30,6 +33,7 @@ public class PetsStoreSteps {
         ) {
 
         Octet<Integer, Integer, String, String, String, Integer, String, String> params = Octet.with(
+
                 id,
                 categoryId,
                 categoryName,
@@ -38,9 +42,11 @@ public class PetsStoreSteps {
                 tagsId,
                 tagsName,
                 status
+
         );
 
-        PetsStoreMetods.createPet(params);
+        Pet newPet = new Pet(params);
+        PetsStoreMethods.createPet(newPet);
 
     }
 

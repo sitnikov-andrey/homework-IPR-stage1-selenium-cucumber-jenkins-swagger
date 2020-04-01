@@ -8,4 +8,4 @@
 
     Примеры:
       |SwaggerURL                  |id        |Name      |Status      |
-      |"http://petstore.swagger.io"|123123123 |"Snoopy"  |"Action"    |
+      |"http://petstore.swagger.io"|111       |"Snoopy"  |"Action"    |

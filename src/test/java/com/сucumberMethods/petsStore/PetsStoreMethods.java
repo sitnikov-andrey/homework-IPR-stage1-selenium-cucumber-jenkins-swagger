@@ -1,4 +1,4 @@
-package com.сucumberMetods.petsStore;
+package com.сucumberMethods.petsStore;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -7,8 +7,8 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.HttpURLConnection;
-import com.сucumberMetods.swagger.SwaggerLocators;
-import org.javatuples.Octet;
+
+import com.сucumberMethods.swagger.SwaggerLocators;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,7 +18,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
 
-public class PetsStoreMetods {
+public class PetsStoreMethods {
 
     private static HttpURLConnection connection;
     public static URL url;
@@ -146,7 +146,7 @@ public class PetsStoreMetods {
 
     }
 
-    public static void updatePetById(int id, String newPetName, String newPetStatus) {
+    public static void updatePetById(Pet updatePet) {
 
         BufferedReader reader;
         String line;
@@ -156,18 +156,16 @@ public class PetsStoreMetods {
 
         try {
 
-            url = new URL(SwaggerLocators.urlPetStorePetId + id); //К URL petstore добавляем id
-            connection = (HttpURLConnection) url.openConnection(); //Открываем коннект, если URL был корректный
+            url = new URL(SwaggerLocators.urlPetStorePetId + updatePet.id); //К URL petstore добавляем id
+            connection = (HttpURLConnection) url.openConnection();
 
-            //Настройка запроса
             connection.setRequestMethod("POST");
             connection.setRequestProperty("User-Agent", SwaggerLocators.USER__AGENT);
             connection.setRequestProperty("Accept-Language", SwaggerLocators.ACCEPT_LANGUAGE);
-            connection.setRequestProperty("Content-Type", "application/json");
             connection.setConnectTimeout(50000);
             connection.setReadTimeout(50000);
 
-            String urlParameters = "name=" + newPetName + "&status=" + newPetStatus;
+            String urlParameters = "name=" + updatePet.petName + "&status=" + updatePet.status;
 
             //Send post request
             connection.setDoOutput(true);
@@ -181,8 +179,8 @@ public class PetsStoreMetods {
 
             if (responseStatus == 200) {
 
-                System.out.println("Новое имя питомца : " + newPetName);
-                System.out.println("Новый статус питомца : " + newPetStatus);
+                System.out.println("Новое имя питомца : " + updatePet.petName);
+                System.out.println("Новый статус питомца : " + updatePet.status);
 
             } else if (responseStatus == 404) {
 
@@ -213,21 +211,11 @@ public class PetsStoreMetods {
 
     }
 
-    public static void createPet(Octet<Integer, Integer, String, String, String, Integer, String, String> params) {
-
-        int id = params.getValue0();
-        int categoryId = params.getValue1();
-        String categoryName = params.getValue2();
-        String petName = params.getValue3();
-        String photoURLs = params.getValue4();
-        int tagsId = params.getValue5();
-        String tagsName = params.getValue6();
-        String status = params.getValue7();
+    public static void createPet(Pet newPet) {
 
         BufferedReader reader;
         String line;
         StringBuffer responseContent = new StringBuffer();
-        Map<Integer, String> responseAndStatus = new HashMap<Integer, String>();
         int responseStatus;
 
         try {
@@ -235,7 +223,6 @@ public class PetsStoreMetods {
             url = new URL(SwaggerLocators.urlPetStorePetId);
             connection = (HttpURLConnection) url.openConnection();
 
-            //Настройка запроса
             connection.setRequestMethod("POST");
             connection.setRequestProperty("User-Agent", SwaggerLocators.USER__AGENT);
             connection.setRequestProperty("Accept-Language", SwaggerLocators.ACCEPT_LANGUAGE);
@@ -243,10 +230,7 @@ public class PetsStoreMetods {
             connection.setConnectTimeout(50000);
             connection.setReadTimeout(50000);
 
-            String urlParameters = "{ \"id\": " + id + ", \"category\": { \"id\": " + categoryId + "," +
-                    " \"name\": \"" + categoryName + "\" }, \"name\": \"" + petName + "\"," +
-                    " \"photoUrls\": [ \"" + photoURLs + "\" ], \"tags\": [ { \"id\": " + tagsId + ", \"name\": \"" + tagsName + "\" } ]," +
-                    " \"status\": \"" + status + "\"}";
+            String urlParameters = newPet.petJson;
 
             //Send post request
             connection.setDoOutput(true);
@@ -260,16 +244,16 @@ public class PetsStoreMetods {
 
             if (responseStatus == 200) {
 
-                System.out.println("id : " + id);
+                System.out.println("id : " + newPet.id);
                 System.out.println("Category :");
-                System.out.println("    id : " + categoryId);
-                System.out.println("    name : " + categoryName);
-                System.out.println("Name : " + petName);
-                System.out.println("Photo URLs : " + photoURLs);
+                System.out.println("    id : " + newPet.categoryId);
+                System.out.println("    name : " + newPet.categoryName);
+                System.out.println("Name : " + newPet.petName);
+                System.out.println("Photo URLs : " + newPet.photoURLs);
                 System.out.println("Tags :");
-                System.out.println("    id : " + tagsId);
-                System.out.println("    name : " + tagsName);
-                System.out.println("Status : " + status);
+                System.out.println("    id : " + newPet.tagsId);
+                System.out.println("    name : " + newPet.tagsName);
+                System.out.println("Status : " + newPet.status);
 
             } else if (responseStatus == 405) {
 
