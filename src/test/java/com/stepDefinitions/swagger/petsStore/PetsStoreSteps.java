@@ -1,19 +1,23 @@
 package com.stepDefinitions.swagger.petsStore;
 
 import com.сucumberMethods.petsStore.Pet;
+import com.сucumberMethods.petsStore.Printer;
 import io.cucumber.java.ru.*; //Импортируем все ключевые слова
 import com.сucumberMethods.petsStore.PetsStoreMethods;
 import org.javatuples.Octet;
+import org.json.JSONArray;
 
 import java.util.HashMap;
 
 public class PetsStoreSteps {
 
+    public static String petsStatus;
+
     @Тогда("я могу получить данные питомца по id = {int}")
     public void я_могу_получить_данные_питомца_по(int id) {
 
         HashMap PetInformationById = PetsStoreMethods.getPetInformationById(id);
-        PetsStoreMethods.printPetInformationById(PetInformationById);
+        Printer.printPetInformationById(PetInformationById);
 
     }
 
@@ -47,6 +51,15 @@ public class PetsStoreSteps {
 
         Pet newPet = new Pet(params);
         PetsStoreMethods.createPet(newPet);
+
+    }
+
+    @Тогда("я могу получить данные питомцев по статусу = {string}")
+    public void я_могу_получить_данные_питомца_по_статусу(String petsStatus) {
+
+        this.petsStatus = petsStatus;
+        HashMap PetsInformationByStatus = PetsStoreMethods.getPetsByStatus(petsStatus);
+        Printer.printPetInformationByStatus(PetsInformationByStatus);
 
     }
 

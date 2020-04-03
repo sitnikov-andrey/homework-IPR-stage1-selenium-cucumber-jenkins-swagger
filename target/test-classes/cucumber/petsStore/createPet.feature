@@ -8,4 +8,5 @@
 
     Примеры:
       |SwaggerURL                  |id |Category id|Category name |Pet name|Photo URLs|Tags id|Tags name|Status |
-      |"http://petstore.swagger.io"|111|101        |"New Category"|"Fill"  |"Same URL"|102    |"New Tag"|"Open" |
+      |"http://petstore.swagger.io"|110|101        |"New Category"|"Fill"  |"Same URL"|102    |"New Tag"|"open" |
+      |"http://petstore.swagger.io"|111|101        |"New Category"|"Fill"  |"Same URL"|102    |"New Tag"|"open" |
