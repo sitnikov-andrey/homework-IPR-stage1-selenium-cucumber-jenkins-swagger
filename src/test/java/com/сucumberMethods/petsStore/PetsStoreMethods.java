@@ -9,13 +9,8 @@ import java.net.URL;
 import java.net.HttpURLConnection;
 
 import com.сucumberMethods.swagger.SwaggerLocators;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.HashMap;
 
