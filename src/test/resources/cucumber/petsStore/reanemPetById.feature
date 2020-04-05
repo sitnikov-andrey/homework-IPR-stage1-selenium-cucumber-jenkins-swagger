@@ -1,5 +1,5 @@
 # language: ru
-@update_pet_by_id
+@rename_pet_by_id
 Функция: Изменяем питомца из БД по id
 
   Структура сценария: Получить питомца по id
