@@ -138,7 +138,7 @@ public class PetsStoreMethods {
 
     }
 
-    public static void updatePetById(Pet updatePet) {
+    public static void renamePetById(Pet renamePet) {
 
         BufferedReader reader;
         String line;
@@ -148,7 +148,7 @@ public class PetsStoreMethods {
 
         try {
 
-            url = new URL(SwaggerLocators.urlPetStorePetId + updatePet.id); //К URL petstore добавляем id
+            url = new URL(SwaggerLocators.urlPetStorePetId + renamePet.getId()); //К URL petstore добавляем id
             connection = (HttpURLConnection) url.openConnection();
 
             connection.setRequestMethod("POST");
@@ -157,7 +157,7 @@ public class PetsStoreMethods {
             connection.setConnectTimeout(50000);
             connection.setReadTimeout(50000);
 
-            String urlParameters = "name=" + updatePet.petName + "&status=" + updatePet.status;
+            String urlParameters = "name=" + renamePet.getPetName() + "&status=" + renamePet.getStatus();
 
             //Send post request
             connection.setDoOutput(true);
@@ -171,8 +171,8 @@ public class PetsStoreMethods {
 
             if (responseStatus == 200) {
 
-                System.out.println("Новое имя питомца : " + updatePet.petName);
-                System.out.println("Новый статус питомца : " + updatePet.status);
+                System.out.println("Новое имя питомца : " + renamePet.getPetName());
+                System.out.println("Новый статус питомца : " + renamePet.getStatus());
 
             } else if (responseStatus == 404) {
 
@@ -211,7 +211,6 @@ public class PetsStoreMethods {
         int responseStatus;
 
         try {
-
             url = new URL(SwaggerLocators.urlPetStorePetId);
             connection = (HttpURLConnection) url.openConnection();
 
@@ -222,12 +221,12 @@ public class PetsStoreMethods {
             connection.setConnectTimeout(50000);
             connection.setReadTimeout(50000);
 
-            String urlParameters = newPet.petJson;
+            String responseBody = JsonCreator.createPetJson(newPet);
 
             //Send post request
             connection.setDoOutput(true);
             DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
-            wr.writeBytes(urlParameters);
+            wr.writeBytes(responseBody);
             wr.flush();
             wr.close();
 
@@ -236,16 +235,16 @@ public class PetsStoreMethods {
 
             if (responseStatus == 200) {
 
-                System.out.println("id : " + newPet.id);
+                System.out.println("id : " + newPet.getId());
                 System.out.println("Category :");
-                System.out.println("    id : " + newPet.categoryId);
-                System.out.println("    name : " + newPet.categoryName);
-                System.out.println("Name : " + newPet.petName);
-                System.out.println("Photo URLs : " + newPet.photoURLs);
+                System.out.println("    id : " + newPet.getCategoryId());
+                System.out.println("    name : " + newPet.getCategoryName());
+                System.out.println("Name : " + newPet.getPetName());
+                System.out.println("Photo URLs : " + newPet.getPhotoURLs());
                 System.out.println("Tags :");
-                System.out.println("    id : " + newPet.tagsId);
-                System.out.println("    name : " + newPet.tagsName);
-                System.out.println("Status : " + newPet.status);
+                System.out.println("    id : " + newPet.getTagsId());
+                System.out.println("    name : " + newPet.getTagsName());
+                System.out.println("Status : " + newPet.getStatus());
 
             } else if (responseStatus == 405) {
 

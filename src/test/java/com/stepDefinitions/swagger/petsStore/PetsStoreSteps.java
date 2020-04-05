@@ -25,8 +25,13 @@ public class PetsStoreSteps {
     public void я_могу_по_id_изменить_имя_пиомца_на(int id, String newPetName, String newPetStatus) {
 
 
-        Pet updatePet = new Pet(id, newPetName, newPetStatus);
-        PetsStoreMethods.updatePetById(updatePet);
+        Pet renamePet = Pet.builder()
+                .id(id)
+                .petName(newPetName)
+                .status(newPetStatus)
+                .build();
+
+        PetsStoreMethods.renamePetById(renamePet);
 
     }
 
@@ -36,20 +41,17 @@ public class PetsStoreSteps {
                                                               String tagsName, String status
         ) {
 
-        Octet<Integer, Integer, String, String, String, Integer, String, String> params = Octet.with(
+        Pet newPet = Pet.builder()
+                .id(id)
+                .categoryId(categoryId)
+                .categoryName(categoryName)
+                .petName(petName)
+                .photoURLs(photoURLs)
+                .tagsId(tagsId)
+                .tagsName(tagsName)
+                .status(status)
+                .build();
 
-                id,
-                categoryId,
-                categoryName,
-                petName,
-                photoURLs,
-                tagsId,
-                tagsName,
-                status
-
-        );
-
-        Pet newPet = new Pet(params);
         PetsStoreMethods.createPet(newPet);
 
     }

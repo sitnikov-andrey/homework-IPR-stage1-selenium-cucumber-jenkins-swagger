@@ -4,21 +4,12 @@ import org.javatuples.Octet;
 
 public class JsonCreator {
 
-    public static String createNewPetJson(Octet<Integer, Integer, String, String, String, Integer, String, String> params) {
+    public static String createPetJson(Pet pet) {
 
-        int id = params.getValue0();
-        int categoryId = params.getValue1();
-        String categoryName = params.getValue2();
-        String petName = params.getValue3();
-        String photoURLs = params.getValue4();
-        int tagsId = params.getValue5();
-        String tagsName = params.getValue6();
-        String status = params.getValue7();
-
-        String newPetJson = "{ \"id\": " + id + ", \"category\": { \"id\": " + categoryId + "," +
-                " \"name\": \"" + categoryName + "\" }, \"name\": \"" + petName + "\"," +
-                " \"photoUrls\": [ \"" + photoURLs + "\" ], \"tags\": [ { \"id\": " + tagsId + ", \"name\": \"" + tagsName + "\" } ]," +
-                " \"status\": \"" + status + "\"}";
+        String newPetJson = "{ \"id\": " + pet.getId() + ", \"category\": { \"id\": " + pet.getCategoryId() + "," +
+                " \"name\": \"" + pet.getCategoryName() + "\" }, \"name\": \"" + pet.getPetName() + "\"," +
+                " \"photoUrls\": [ \"" + pet.getPhotoURLs() + "\" ], \"tags\": [ { \"id\": " + pet.getTagsId() +
+                ", \"name\": \"" + pet.getTagsName() + "\" } ], \"status\": \"" + pet.getStatus() + "\"}";
 
         return newPetJson;
     }
