@@ -65,4 +65,25 @@ public class PetsStoreSteps {
 
     }
 
+    @Тогда("я могу обновить данные питомца по заданным параметрам : {int}, {int}, {string}, {string}, {string}, {int}, {string}, {string}")
+    public void  могу_обновить_данные_питомца_по_заданным_параметрам(int id, int categoryId, String categoryName,
+                                                              String petName, String photoURLs, int tagsId,
+                                                              String tagsName, String status
+    ) {
+
+        Pet updatePet = Pet.builder()
+                .id(id)
+                .categoryId(categoryId)
+                .categoryName(categoryName)
+                .petName(petName)
+                .photoURLs(photoURLs)
+                .tagsId(tagsId)
+                .tagsName(tagsName)
+                .status(status)
+                .build();
+
+        PetsStoreMethods.updatePetById(updatePet);
+
+    }
+
 }

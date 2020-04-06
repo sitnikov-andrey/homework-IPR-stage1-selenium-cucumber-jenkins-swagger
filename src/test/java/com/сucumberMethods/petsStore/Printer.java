@@ -4,6 +4,7 @@ import com.stepDefinitions.swagger.petsStore.PetsStoreSteps;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.openqa.selenium.NotFoundException;
 
 import java.util.EmptyStackException;
 import java.util.HashMap;
@@ -16,9 +17,11 @@ public class Printer {
         for (Integer key : PetInformation.keySet()) {
             if (key == 400 || key == 404) {
                 System.out.println("Статус : " + key);
-                System.out.println(PetInformation.get(key));
+                throw new NotFoundException(PetInformation.get(key));
+
             } else if (key == 200) {
                 System.out.println("Статус : " + key);
+                System.out.println("Данные питомца удачно получены :");
                 parsePetInformation(PetInformation.get(key));
             }
         }

@@ -9,6 +9,7 @@ import java.net.URL;
 import java.net.HttpURLConnection;
 
 import com.сucumberMethods.swagger.SwaggerLocators;
+import org.openqa.selenium.NotFoundException;
 
 import java.io.IOException;
 import java.util.Map;
@@ -176,11 +177,11 @@ public class PetsStoreMethods {
 
             } else if (responseStatus == 404) {
 
-                System.out.println("Pet not found");
+                throw new NotFoundException("Pet not found");
 
             } else if (responseStatus == 405) {
 
-                System.out.println("Invalid input");
+                throw new NotFoundException("Invalid input");
 
             } else {
                 //Если статус не соответствует выше перечисленным, то получаем ответ ошибки и передаем его как текст в исключение
@@ -248,7 +249,83 @@ public class PetsStoreMethods {
 
             } else if (responseStatus == 405) {
 
-                System.out.println("Invalid input");
+                throw new NotFoundException("Invalid input");
+
+            } else {
+                //Если статус не соответствует выше перечисленным, то получаем ответ ошибки и передаем его как текст в исключение
+                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+                while ((line = reader.readLine()) != null) {
+                    responseContent.append(line);
+                }
+                reader.close();
+                throw new IOException(responseContent.toString());
+            }
+
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void updatePetById(Pet updatePet) {
+
+        BufferedReader reader;
+        String line;
+        StringBuffer responseContent = new StringBuffer();
+        int responseStatus;
+
+        try {
+            url = new URL(SwaggerLocators.urlPetStorePetId);
+            connection = (HttpURLConnection) url.openConnection();
+
+            connection.setRequestMethod("PUT");
+            connection.setRequestProperty("User-Agent", SwaggerLocators.USER__AGENT);
+            connection.setRequestProperty("Accept-Language", SwaggerLocators.ACCEPT_LANGUAGE);
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setConnectTimeout(50000);
+            connection.setReadTimeout(50000);
+
+            String responseBody = JsonCreator.createPetJson(updatePet);
+
+            //Send post request
+            connection.setDoOutput(true);
+            DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+            wr.writeBytes(responseBody);
+            wr.flush();
+            wr.close();
+
+            responseStatus = connection.getResponseCode(); //Получаем статус ответа
+            System.out.println("Статус : " + responseStatus);
+
+            if (responseStatus == 200) {
+                System.out.println("Данные питомца удачно обновлены :");
+                System.out.println("id : " + updatePet.getId());
+                System.out.println("Category :");
+                System.out.println("    id : " + updatePet.getCategoryId());
+                System.out.println("    name : " + updatePet.getCategoryName());
+                System.out.println("Name : " + updatePet.getPetName());
+                System.out.println("Photo URLs : " + updatePet.getPhotoURLs());
+                System.out.println("Tags :");
+                System.out.println("    id : " + updatePet.getTagsId());
+                System.out.println("    name : " + updatePet.getTagsName());
+                System.out.println("Status : " + updatePet.getStatus());
+
+            } else if (responseStatus == 405) {
+
+                throw new NotFoundException("Validation exception");
+
+            } else if (responseStatus == 404) {
+
+                throw new NotFoundException("Pet not found");
+
+            } else if (responseStatus == 400) {
+
+                throw new NotFoundException("Invalid ID supplied");
 
             } else {
                 //Если статус не соответствует выше перечисленным, то получаем ответ ошибки и передаем его как текст в исключение
