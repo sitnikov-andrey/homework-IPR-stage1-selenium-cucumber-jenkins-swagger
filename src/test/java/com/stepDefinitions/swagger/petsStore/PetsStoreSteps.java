@@ -86,4 +86,15 @@ public class PetsStoreSteps {
 
     }
 
+    @Тогда("я могу удалить питомца по id = {int}")
+    public void я_могу_удалить_питомца_по(int id) {
+
+        Pet deletePet = Pet.builder()
+                .id(id)
+                .build();
+
+        PetsStoreMethods.deletePetById(deletePet);
+
+    }
+
 }

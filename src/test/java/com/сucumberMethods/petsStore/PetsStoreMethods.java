@@ -348,4 +348,62 @@ public class PetsStoreMethods {
 
     }
 
+    public static void deletePetById(Pet deletePet) {
+
+        BufferedReader reader;
+        String line;
+        StringBuffer responseContent = new StringBuffer();
+        int responseStatus;
+
+        try {
+            url = new URL(SwaggerLocators.urlPetStorePetId + deletePet.getId());
+            connection = (HttpURLConnection) url.openConnection();
+
+            connection.setRequestMethod("DELETE");
+            connection.setRequestProperty("User-Agent", SwaggerLocators.USER__AGENT);
+            connection.setRequestProperty("Accept-Language", SwaggerLocators.ACCEPT_LANGUAGE);
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("api_key", SwaggerLocators.API_KEY);
+            connection.setConnectTimeout(50000);
+            connection.setReadTimeout(50000);
+
+            responseStatus = connection.getResponseCode(); //Получаем статус ответа
+            System.out.println("Статус : " + responseStatus);
+
+            if (responseStatus == 200) {
+                System.out.println("Питомец удален!");
+
+            } else if (responseStatus == 405) {
+
+                throw new NotFoundException("Validation exception");
+
+            } else if (responseStatus == 404) {
+
+                throw new NotFoundException("Pet not found");
+
+            } else if (responseStatus == 400) {
+
+                throw new NotFoundException("Invalid ID supplied");
+
+            } else {
+                //Если статус не соответствует выше перечисленным, то получаем ответ ошибки и передаем его как текст в исключение
+                reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
+                while ((line = reader.readLine()) != null) {
+                    responseContent.append(line);
+                }
+                reader.close();
+                throw new IOException(responseContent.toString());
+            }
+
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
