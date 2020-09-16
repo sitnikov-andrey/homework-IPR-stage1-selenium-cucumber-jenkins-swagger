@@ -8,6 +8,8 @@ import com.сucumberMethods.petsStore.PetsStoreMethods;
 import org.javatuples.Octet;
 import org.json.JSONArray;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PetsStoreSteps {
@@ -100,15 +102,19 @@ public class PetsStoreSteps {
 
     @Дано("что сушествуют питомцы со статусами: available, pending, sold")
     public void что_сушествуют_питомцы_со_статусами_available_pending_sold(){
-        HashMap<Integer, String> PetsInformationByStatus = PetsStoreMethods.getPetsByStatus("asdasdasdzxcasd");
-        System.out.println("Ento ono" + PetsInformationByStatus);
-        for (Integer key : PetsInformationByStatus.keySet()) {
-            String x = new String(PetsInformationByStatus.get(key));
-            if (x.equals("[]")){
-                System.out.println("Ento da ");
+        ArrayList<String> statusNameList = new ArrayList<String>();
+        statusNameList.add("available");
+        statusNameList.add("pending");
+        statusNameList.add("sold");
+        for (String status : statusNameList) {
+            HashMap<Integer, String> PetsInformationByStatus = PetsStoreMethods.getPetsByStatus(status);
+            for (Integer key : PetsInformationByStatus.keySet()) {
+                String x = PetsInformationByStatus.get(key);
+                if (x.equals("[]")) {
+
+                }
             }
         }
-
 
     }
 
