@@ -2,6 +2,7 @@ package com.stepDefinitions.swagger.petsStore;
 
 import com.сucumberMethods.petsStore.Pet;
 import com.сucumberMethods.petsStore.Printer;
+import io.cucumber.java.an.E;
 import io.cucumber.java.ru.*; //Импортируем все ключевые слова
 import com.сucumberMethods.petsStore.PetsStoreMethods;
 import org.javatuples.Octet;
@@ -94,6 +95,20 @@ public class PetsStoreSteps {
                 .build();
 
         PetsStoreMethods.deletePetById(deletePet);
+
+    }
+
+    @Дано("что сушествуют питомцы со статусами: available, pending, sold")
+    public void что_сушествуют_питомцы_со_статусами_available_pending_sold(){
+        HashMap<Integer, String> PetsInformationByStatus = PetsStoreMethods.getPetsByStatus("asdasdasdzxcasd");
+        System.out.println("Ento ono" + PetsInformationByStatus);
+        for (Integer key : PetsInformationByStatus.keySet()) {
+            String x = new String(PetsInformationByStatus.get(key));
+            if (x.equals("[]")){
+                System.out.println("Ento da ");
+            }
+        }
+
 
     }
 

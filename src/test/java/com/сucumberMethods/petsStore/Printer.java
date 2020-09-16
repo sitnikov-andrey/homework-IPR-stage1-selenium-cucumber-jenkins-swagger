@@ -41,7 +41,9 @@ public class Printer {
                     throw new EmptyStackException();
                 }else{
                     for (Object json : jsonResponseList){
+                        printLine();
                         parsePetInformation(json.toString());
+                        printLine();
                     }
                 }
 
@@ -50,29 +52,38 @@ public class Printer {
 
     }
 
+    public static void printLine(){
+        for (int i = 0; i < 30; i++){
+            System.out.print("-");
+        }
+        System.out.println();
+    }
+
     public static void parsePetInformation(String PetInformationUglyJson) throws JSONException {
 
-        int id;
+        long id;
         JSONObject category;
-        int categoryId;
+        long categoryId;
         String categoryName;
         String name;
         JSONArray photoUrls;
         JSONArray tags;
-        int tagsId;
+        long tagsId;
         String tagsName;
         String status;
 
         JSONObject petInformation = new JSONObject(PetInformationUglyJson);
-        id = petInformation.getInt("id");
+        id = petInformation.getLong("id");
         System.out.println("id : " + id);
 
-        category = petInformation.getJSONObject("category");
-        categoryId = category.getInt("id");
-        categoryName = category.getString("name");
-        System.out.println("category :");
-        System.out.println("    id : " + categoryId);
-        System.out.println("    name : " + categoryName);
+        if (petInformation.toString().contains("category")){
+            category = petInformation.getJSONObject("category");
+            categoryId = category.getLong("id");
+            categoryName = category.getString("name");
+            System.out.println("category :");
+            System.out.println("    id : " + categoryId);
+            System.out.println("    name : " + categoryName);
+        }
 
         name = petInformation.getString("name");
         System.out.println("name : " + name);

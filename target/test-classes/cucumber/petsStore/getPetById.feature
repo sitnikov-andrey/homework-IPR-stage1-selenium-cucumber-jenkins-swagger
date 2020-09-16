@@ -8,4 +8,4 @@
 
     Примеры:
       |SwaggerURL                  |id  |
-      |"http://petstore.swagger.io"|111 |
+      |"https://petstore.swagger.io/#/pet"|111 |

@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = "src/test/resources/cucumber/petsStore",
         glue = {"com/stepDefinitions/swagger/petsStore", "com/stepDefinitions/swagger/swaggerMain"},
-        tags = "@delete_pet_by_id",
+        tags = "@find_pets_by_status",
         plugin = {"pretty", "summary"},
         strict = true
 )
